@@ -1,2 +1,2 @@
-# ITCS-4231
+# Voidrunner
 ITCS-4231 Final Project
