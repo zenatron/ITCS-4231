@@ -2,45 +2,61 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour
+public class TrackMovement : MonoBehaviour
 {
-    private Rigidbody rb;
-    private float movementX;
-    private float movementY;
-    public float speed = 0;
+    // private Rigidbody rb;
+    /* Phil 3/3/25
+    This may change, but unless we need the rigidbody for
+    something, it may be better to use transform
+    */
+    private Transform trans;
+
+    [Header("Rotation Speeds")]
+    [SerializeField] private float xSpeed = 0.25f;
+    [SerializeField] private float ySpeed = 1f;
+    [SerializeField] private float zSpeed = 0.25f;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        
+        // rb = GetComponent<Rigidbody>();
+        trans = GetComponent<Transform>();
     }
 
-    void OnMove(InputValue movementValue)
+    private void Update()
     {
-        Vector2 movementVector = movementValue.Get<Vector2>();
-        movementX = movementVector.x;
-        movementY = movementVector.y;
+        /* Phil 3/3/25
+        We probably want an adaptive speed based on the current angular velocity
+        Some axes may need their speed to be dampened
+        */
 
-        
-    }
+        // Pitch (X-axis)
+        if (Input.GetKey(KeyCode.W))
+        {
+            trans.Rotate(-0.5f * xSpeed, 0, 0, Space.Self);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            trans.Rotate(0.5f * xSpeed, 0, 0, Space.Self);
+        }
 
-    private void FixedUpdate ()
-    {
-        if (Input.GetKey(KeyCode.UpArrow))
+        // Yaw (Y-axis)
+        if (Input.GetKey(KeyCode.Q))
         {
-            rb.transform.Rotate(0.5f, 0.0f, 0.0f, Space.Self);
+            trans.Rotate(0, -0.05f * ySpeed, 0, Space.Self);
         }
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.E))
         {
-            rb.transform.Rotate(-0.5f, 0.0f, 0.0f, Space.Self);
+            trans.Rotate(0, 0.05f * ySpeed, 0, Space.Self);
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+
+        // Roll (Z-axis)
+        if (Input.GetKey(KeyCode.A))
         {
-            rb.transform.Rotate(0.0f, 0.0f, -0.5f, Space.Self);
+            trans.Rotate(0, 0, -0.5f * zSpeed, Space.Self);
         }
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.D))
         {
-            rb.transform.Rotate(0.0f, 0.0f, 0.5f, Space.Self);
+            trans.Rotate(0, 0, 0.5f * zSpeed, Space.Self);
         }
     }
 }
