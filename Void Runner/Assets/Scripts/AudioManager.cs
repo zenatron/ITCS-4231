@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using System.Collections.Generic;
+using System;
 
 public class AudioManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class AudioManager : MonoBehaviour
 
     [Header("Audio Sources")]
     [SerializeField] private AudioSource _bgmSource;
+    [SerializeField] private AudioSource _rollSource;
 
     [Header("Audio Mixer")]
     [SerializeField] private AudioMixer _audioMixer;
@@ -158,6 +160,24 @@ public class AudioManager : MonoBehaviour
     public void PlayRollingSFX()
     {
         PlaySFX(_rollingClip);
+    }
+
+    public void StartRollingSFX()
+    {
+        if (_rollSource != null && !_rollSource.isPlaying)
+        {
+            _rollSource.clip = _rollingClip;
+            _rollSource.loop = true;
+            _rollSource.Play();
+        }
+    }
+
+    public void StopRollingSFX()
+    {
+        if (_rollSource != null && _rollSource.isPlaying)
+        {
+            _rollSource.Stop();
+        }
     }
 
     /// <summary>
