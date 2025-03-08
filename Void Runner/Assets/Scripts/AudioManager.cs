@@ -24,6 +24,7 @@ public class AudioManager : MonoBehaviour
     [Header("Volume Controls (dB)")]
     [SerializeField, Range(-80f, 0f)] private float bgmVolume = 0f;
     [SerializeField, Range(-80f, 0f)] private float sfxVolume = 0f;
+    [SerializeField, Range(0f, 1f)] private float rollSFXVolume = 1f;
 
 
     [Header("SFX Pooling")]
@@ -61,6 +62,9 @@ public class AudioManager : MonoBehaviour
     {
         InitializeSFXPool();
         PlayBackgroundMusic();
+
+        SetBGMVolume(bgmVolume);
+        SetSFXVolume(sfxVolume);
     }
 
     private void OnValidate()
@@ -69,6 +73,10 @@ public class AudioManager : MonoBehaviour
         {
             SetBGMVolume(bgmVolume);
             SetSFXVolume(sfxVolume);
+        }
+        if (_rollSource)
+        {
+            _rollSource.volume = rollSFXVolume;
         }
     }
 
@@ -168,6 +176,7 @@ public class AudioManager : MonoBehaviour
         {
             _rollSource.clip = _rollingClip;
             _rollSource.loop = true;
+            _rollSource.volume = rollSFXVolume;
             _rollSource.Play();
         }
     }
