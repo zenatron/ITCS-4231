@@ -6,17 +6,14 @@ public class NewFreeLookController : MonoBehaviour
     [Header("Assign the CinemachineCamera that has OrbitalFollow + RotationComposer")]
     [SerializeField] private CinemachineCamera cineCam;
 
-    [Header("Rotation Settings")]
-    [SerializeField] private float rotationSensitivity = 3f;
-
     [Header("Zoom Settings")]
     [SerializeField] private float scrollSensitivity = 5f;
     [SerializeField] private float minRadius = 2f;
     [SerializeField] private float maxRadius = 20f;
-
-    // Cached references to the two key components
     private CinemachineOrbitalFollow orbitalFollow;
-    private CinemachineRotationComposer rotationComposer;
+    
+    // Store the initial camera radius as our maximum zoom-out point
+    private float initialRadius;
 
     private void Awake()
     {
@@ -26,23 +23,28 @@ public class NewFreeLookController : MonoBehaviour
             return;
         }
 
-        // Grab the OrbitalFollow and RotationComposer from the same camera
         orbitalFollow = cineCam.GetComponent<CinemachineOrbitalFollow>();
-        rotationComposer = cineCam.GetComponent<CinemachineRotationComposer>();
 
         if (!orbitalFollow)
             Debug.LogError("CinemachineOrbitalFollow not found on this camera!");
-        if (!rotationComposer)
-            Debug.LogError("CinemachineRotationComposer not found on this camera!");
+    }
+    
+    private void Start()
+    {
+        if (orbitalFollow)
+        {
+            initialRadius = orbitalFollow.Radius;
+            // maxRadius no greater than the initial radius
+            maxRadius = Mathf.Min(maxRadius, initialRadius);
+        }
     }
 
     private void Update()
     {
-        if (!orbitalFollow || !rotationComposer)
+        if (!orbitalFollow)
             return;
 
         HandleZoom();
-        HandleRotation();
     }
 
     private void HandleZoom()
@@ -53,18 +55,12 @@ public class NewFreeLookController : MonoBehaviour
         {
             // Adjust the radius (distance from target)
             float newRadius = orbitalFollow.Radius - scroll * scrollSensitivity;
-            newRadius = Mathf.Clamp(newRadius, minRadius, maxRadius);
+            
+            // Clamp between minimum and the initial radius (or user-set max if smaller)
+            float effectiveMaxRadius = Mathf.Min(maxRadius, initialRadius);
+            newRadius = Mathf.Clamp(newRadius, minRadius, effectiveMaxRadius);
+            
             orbitalFollow.Radius = newRadius;
-        }
-    }
-
-    private void HandleRotation()
-    {
-        // Only rotate if left mouse button is held
-        if (Input.GetMouseButton(0))
-        {
-            float mouseX = Input.GetAxis("Mouse X") * rotationSensitivity;
-            float mouseY = Input.GetAxis("Mouse Y") * rotationSensitivity;
         }
     }
 }

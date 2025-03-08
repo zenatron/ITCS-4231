@@ -3,23 +3,26 @@ using Unity.Cinemachine;
 
 public class CustomCinemachineInput : MonoBehaviour
 {
-    private void OnEnable()
+    [Header("Assign the CinemachineInputAxisController here")]
+    [SerializeField] private CinemachineInputAxisController inputController;
+
+    void Start()
     {
-        // Override Cinemachine's input delegate.
-        CinemachineCore.GetInputAxis = GetInputAxis;
+        if (inputController == null)
+            inputController = GetComponent<CinemachineInputAxisController>();
+
+        // Start with camera movement disabled until player holds LMB.
+        inputController.enabled = false;
     }
 
-    private void OnDisable()
+    void Update()
     {
-        // Reset the delegate.
-        CinemachineCore.GetInputAxis = null;
-    }
-
-    // Only return nonzero axis values if the left mouse button is held down.
-    private float GetInputAxis(string axisName)
-    {
-        if (Input.GetMouseButton(0))
-            return Input.GetAxis(axisName);
-        return 0;
+        // While LMB held, enable input.
+        if (Input.GetMouseButtonDown(0))
+            inputController.enabled = true;
+        
+        // While LMB released, disable input.
+        if (Input.GetMouseButtonUp(0))
+            inputController.enabled = false;
     }
 }
