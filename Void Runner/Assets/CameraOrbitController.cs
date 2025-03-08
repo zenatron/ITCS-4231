@@ -1,0 +1,66 @@
+using UnityEngine;
+using Unity.Cinemachine;
+
+public class NewFreeLookController : MonoBehaviour
+{
+    [Header("Assign the CinemachineCamera that has OrbitalFollow + RotationComposer")]
+    [SerializeField] private CinemachineCamera cineCam;
+
+    [Header("Zoom Settings")]
+    [SerializeField] private float scrollSensitivity = 5f;
+    [SerializeField] private float minRadius = 2f;
+    [SerializeField] private float maxRadius = 20f;
+    private CinemachineOrbitalFollow orbitalFollow;
+    
+    // Store the initial camera radius as our maximum zoom-out point
+    private float initialRadius;
+
+    private void Awake()
+    {
+        if (!cineCam)
+        {
+            Debug.LogError("No CinemachineCamera assigned!");
+            return;
+        }
+
+        orbitalFollow = cineCam.GetComponent<CinemachineOrbitalFollow>();
+
+        if (!orbitalFollow)
+            Debug.LogError("CinemachineOrbitalFollow not found on this camera!");
+    }
+    
+    private void Start()
+    {
+        if (orbitalFollow)
+        {
+            initialRadius = orbitalFollow.Radius;
+            // maxRadius no greater than the initial radius
+            maxRadius = Mathf.Min(maxRadius, initialRadius);
+        }
+    }
+
+    private void Update()
+    {
+        if (!orbitalFollow)
+            return;
+
+        HandleZoom();
+    }
+
+    private void HandleZoom()
+    {
+        // Read mouse scroll input
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (Mathf.Abs(scroll) > 0.01f)
+        {
+            // Adjust the radius (distance from target)
+            float newRadius = orbitalFollow.Radius - scroll * scrollSensitivity;
+            
+            // Clamp between minimum and the initial radius (or user-set max if smaller)
+            float effectiveMaxRadius = Mathf.Min(maxRadius, initialRadius);
+            newRadius = Mathf.Clamp(newRadius, minRadius, effectiveMaxRadius);
+            
+            orbitalFollow.Radius = newRadius;
+        }
+    }
+}
