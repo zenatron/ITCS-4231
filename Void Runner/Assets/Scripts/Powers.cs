@@ -4,27 +4,43 @@ public class Powers : MonoBehaviour
 {
     private Rigidbody rb;
     private Transform tf;
-    private Material mat;
+    public bool invertGravity = false;
+    public bool isGrounded = true;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         tf = GetComponent<Transform>();
-        mat = GetComponent<Renderer>().material;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) {
-            mat.color = Color.red;
-        } else if (Input.GetKeyDown(KeyCode.Alpha2)) {
-            mat.color = Color.green;
-        } else if (Input.GetKeyDown(KeyCode.Alpha3)) {
-            mat.color = Color.blue;
-        } else if (Input.GetKeyDown(KeyCode.Alpha4)) {
-            mat.color = Color.yellow;
+        if (invertGravity) {
+            rb.AddForce(-2*Physics.gravity, ForceMode.Acceleration);
         }
+        RaycastHit isFloor;
+        Vector3 down = tf.TransformDirection(Vector3.down);
+
+        if (Physics.Raycast(tf.position, down, out isFloor, 0.6f)) {
+            isGrounded = true;
+            Debug.DrawLine(tf.position, isFloor.point, Color.green);
+        } else {
+            isGrounded = false;
+            Debug.DrawLine(tf.position, tf.position + down * 0.5f, Color.red);
+        }
+
     }
+
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Alpha2)) {
+            invertGravity = !invertGravity;
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
+            rb.AddForce(0, 5, 0, ForceMode.Impulse);
+            isGrounded = false;
+        }
+
+    }
+
 }
