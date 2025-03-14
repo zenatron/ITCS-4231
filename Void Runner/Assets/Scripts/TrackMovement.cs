@@ -9,13 +9,15 @@ public class TrackMovement : MonoBehaviour
     This may change, but unless we need the rigidbody for
     something, it may be better to use transform
     */
+
     private Transform trans;
 
     [Header("Rotation Speeds")]
-    [SerializeField] private float xSpeed = 0.25f;
-    [SerializeField] private float ySpeed = 1f;
-    [SerializeField] private float zSpeed = 0.25f;
+    [SerializeField] public float xSpeed = 0.25f;
+    [SerializeField] public float ySpeed = 1f;
+    [SerializeField] public float zSpeed = 0.25f;
 
+    
     void Start()
     {
         // rb = GetComponent<Rigidbody>();
