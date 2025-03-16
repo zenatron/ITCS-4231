@@ -6,6 +6,7 @@ TagManager:
   tags:
   - MainSphere
   - Track
+  - Checkpoint
   layers:
   - Default
   - TransparentFX

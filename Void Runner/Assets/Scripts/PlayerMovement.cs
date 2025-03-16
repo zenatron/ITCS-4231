@@ -38,6 +38,6 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(Vector3.right * accelerationForce, ForceMode.Acceleration);
         }
-        Debug.Log("Player Linear Velocity: " + rb.linearVelocity.magnitude);
+        //Debug.Log("Player Linear Velocity: " + rb.linearVelocity.magnitude);
     }
 }

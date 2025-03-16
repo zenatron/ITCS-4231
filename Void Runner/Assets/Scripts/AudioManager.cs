@@ -36,10 +36,10 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip _collisionClip;
     [SerializeField] private AudioClip _rollingClip;
     [SerializeField] private AudioClip _deathClip;
+    [SerializeField] private AudioClip _checkpointClip;
 
     // More clips to be used in the future
     // [SerializeField] private AudioClip _abilitySwitchClip;
-    // [SerializeField] private AudioClip _checkpointClip;
     // [SerializeField] private AudioClip _winClip;
 #endregion Audio Parameters
 
@@ -148,7 +148,11 @@ public class AudioManager : MonoBehaviour
     /// </summary>
     public void PlaySFX(AudioClip clip)
     {
-        if (clip == null) return;
+        if (clip == null)
+        {
+            Debug.LogWarning("No audio clip provided for: " + clip.name);
+            return;
+        }
         AudioSource source = GetAvailableSFXSource();
         source.PlayOneShot(clip);
     }
@@ -195,6 +199,14 @@ public class AudioManager : MonoBehaviour
     public void PlayDeathSFX()
     {
         PlaySFX(_deathClip);
+    }
+
+    /// <summary>
+    /// Play checkpoint SFX
+    /// </summary>
+    public void PlayCheckpointSFX()
+    {
+        PlaySFX(_checkpointClip);
     }
 
 #endregion SFX & BGM Playback Methods
