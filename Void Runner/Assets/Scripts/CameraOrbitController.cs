@@ -1,7 +1,7 @@
 using UnityEngine;
 using Unity.Cinemachine;
 
-public class NewFreeLookController : MonoBehaviour
+public class CameraOrbitController : MonoBehaviour
 {
     [Header("Assign the CinemachineCamera that has OrbitalFollow + RotationComposer")]
     [SerializeField] private CinemachineCamera cineCam;
@@ -11,8 +11,7 @@ public class NewFreeLookController : MonoBehaviour
     [SerializeField] private float minRadius = 2f;
     [SerializeField] private float maxRadius = 20f;
     private CinemachineOrbitalFollow orbitalFollow;
-    
-    // Store the initial camera radius as our maximum zoom-out point
+    private CinemachineInputAxisController inputController;
     private float initialRadius;
 
     private void Awake()
@@ -37,12 +36,26 @@ public class NewFreeLookController : MonoBehaviour
             // maxRadius no greater than the initial radius
             maxRadius = Mathf.Min(maxRadius, initialRadius);
         }
+
+        if (inputController == null)
+            inputController = cineCam.GetComponent<CinemachineInputAxisController>();
+
+        // Start with camera movement disabled until player holds LMB.
+        inputController.enabled = false;
     }
 
     private void Update()
     {
         if (!orbitalFollow)
             return;
+
+         // While LMB held, enable input.
+        if (Input.GetMouseButtonDown(0))
+            inputController.enabled = true;
+        
+        // While LMB released, disable input.
+        if (Input.GetMouseButtonUp(0))
+            inputController.enabled = false;
 
         HandleZoom();
     }
