@@ -24,6 +24,7 @@ public class AudioManager : MonoBehaviour
     [Header("Volume Controls (dB)")]
     [SerializeField, Range(-80f, 0f)] private float bgmVolume = 0f;
     [SerializeField, Range(-80f, 0f)] private float sfxVolume = 0f;
+    [SerializeField, Range(0f, 1f)] private float rollSFXVolume = 1f;
 
 
     [Header("SFX Pooling")]
@@ -35,10 +36,10 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip _collisionClip;
     [SerializeField] private AudioClip _rollingClip;
     [SerializeField] private AudioClip _deathClip;
+    [SerializeField] private AudioClip _checkpointClip;
 
     // More clips to be used in the future
     // [SerializeField] private AudioClip _abilitySwitchClip;
-    // [SerializeField] private AudioClip _checkpointClip;
     // [SerializeField] private AudioClip _winClip;
 #endregion Audio Parameters
 
@@ -61,6 +62,9 @@ public class AudioManager : MonoBehaviour
     {
         InitializeSFXPool();
         PlayBackgroundMusic();
+
+        SetBGMVolume(bgmVolume);
+        SetSFXVolume(sfxVolume);
     }
 
     private void OnValidate()
@@ -69,6 +73,10 @@ public class AudioManager : MonoBehaviour
         {
             SetBGMVolume(bgmVolume);
             SetSFXVolume(sfxVolume);
+        }
+        if (_rollSource)
+        {
+            _rollSource.volume = rollSFXVolume;
         }
     }
 
@@ -140,7 +148,11 @@ public class AudioManager : MonoBehaviour
     /// </summary>
     public void PlaySFX(AudioClip clip)
     {
-        if (clip == null) return;
+        if (clip == null)
+        {
+            Debug.LogWarning("No audio clip provided for: " + clip.name);
+            return;
+        }
         AudioSource source = GetAvailableSFXSource();
         source.PlayOneShot(clip);
     }
@@ -168,6 +180,7 @@ public class AudioManager : MonoBehaviour
         {
             _rollSource.clip = _rollingClip;
             _rollSource.loop = true;
+            _rollSource.volume = rollSFXVolume;
             _rollSource.Play();
         }
     }
@@ -186,6 +199,14 @@ public class AudioManager : MonoBehaviour
     public void PlayDeathSFX()
     {
         PlaySFX(_deathClip);
+    }
+
+    /// <summary>
+    /// Play checkpoint SFX
+    /// </summary>
+    public void PlayCheckpointSFX()
+    {
+        PlaySFX(_checkpointClip);
     }
 
 #endregion SFX & BGM Playback Methods
