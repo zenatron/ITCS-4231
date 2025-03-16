@@ -803,6 +803,7 @@ GameObject:
   - component: {fileID: 354343804}
   - component: {fileID: 354343803}
   - component: {fileID: 354343802}
+  - component: {fileID: 354343810}
   - component: {fileID: 354343807}
   - component: {fileID: 354343808}
   - component: {fileID: 354343809}
@@ -953,7 +954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cffda7bddb53e27428b671959e5596e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minRollingSpeed: 0.0001
+  minRollingSpeed: 0.1
 --- !u!114 &354343809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -968,6 +969,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   invertGravity: 0
   isGrounded: 1
+--- !u!114 &354343810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354343801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff861a69428b24b2abd7179a6b55d6ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 354343802}
+  accelerationForce: 3
+  maxSpeed: 15
 --- !u!1 &387386962
 GameObject:
   m_ObjectHideFlags: 0
@@ -4713,7 +4729,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1900433077}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4117be2c1744084786a109513226a97, type: 3}
   m_Name: 
