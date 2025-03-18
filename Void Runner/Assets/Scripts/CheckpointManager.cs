@@ -18,6 +18,7 @@ public class CheckpointManager : MonoBehaviour
     
     /// <summary>list of all checkpoints in the scene</summary>
     private List<Checkpoint> checkpoints = new List<Checkpoint>();
+    [SerializeField] private Transform playerTransform;
     
     private void Awake()
     {
@@ -30,7 +31,7 @@ public class CheckpointManager : MonoBehaviour
     {
         // Reset checkpoint state
         checkpointState.lastCheckpointID = 0;
-        checkpointState.lastCheckpointPosition = Vector3.zero;
+        checkpointState.lastCheckpointPosition = playerTransform.position;
         
         // Find and register all checkpoints in the scene on startup
         RegisterAllCheckpoints();
