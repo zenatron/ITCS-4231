@@ -516,7 +516,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &36881713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -526,14 +526,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 36881712}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8254889d536e4264a222afc6a69b8fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 038317db4041f4259930a7a24c0899c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   startCanvas: {fileID: 1169552188}
   deathCanvas: {fileID: 161154354}
-  settingsCanvas: {fileID: 1162812747}
+  settingsCanvas: {fileID: 1937320954}
   winCanvas: {fileID: 1971695885}
-  pauseCanvas: {fileID: 510992054}
+  pauseCanvas: {fileID: 1457058636}
   UI: {fileID: 1958418724}
 --- !u!4 &36881714
 Transform:
@@ -22132,7 +22132,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 0
-  m_AllowDynamicResolution: 0
+  m_AllowDynamicResolution: 1
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -22145,8 +22145,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1939491055}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17364821, y: 6.79041e-16, z: -1.1973326e-16, w: 0.9848078}
-  m_LocalPosition: {x: 0, y: 11.970704, z: -32.88924}
+  m_LocalRotation: {x: 0.15212335, y: -0.000000034385806, z: 0.00000000529248, w: 0.98836154}
+  m_LocalPosition: {x: 2.65, y: 3.607058, z: -8.227169}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22209,7 +22209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clearColorMode: 1
-  backgroundColorHDR: {r: 0.31854683, g: 0.31854683, b: 0.31854683, a: 0}
+  backgroundColorHDR: {r: 0.6938719, g: 0.67954254, b: 0.68668544, a: 0}
   clearDepth: 1
   volumeLayerMask:
     serializedVersion: 2
@@ -22241,7 +22241,7 @@ MonoBehaviour:
   flipYMode: 0
   xrRendering: 1
   fullscreenPassthrough: 0
-  allowDynamicResolution: 0
+  allowDynamicResolution: 1
   customRenderingSettings: 0
   invertFaceCulling: 0
   probeLayerMask:
