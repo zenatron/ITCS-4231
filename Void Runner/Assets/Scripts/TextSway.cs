@@ -15,7 +15,7 @@ public class TextSway : MonoBehaviour
 
     IEnumerator StartSway() {
         while (true) {
-            float angle = Mathf.Sin(Time.time * time) * degrees;
+            float angle = Mathf.Sin(Time.realtimeSinceStartup * time) * degrees;
             blurb.rotation = Quaternion.Euler(0, 0, angle);
             yield return null;
         }

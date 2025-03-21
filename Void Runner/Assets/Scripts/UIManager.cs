@@ -6,12 +6,25 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance {get; private set;}
     [SerializeField] private GameObject startCanvas;
     [SerializeField] private GameObject deathCanvas;
     [SerializeField] private GameObject settingsCanvas;
     [SerializeField] private GameObject winCanvas;
     [SerializeField] private GameObject pauseCanvas;
     [SerializeField] private GameObject UI;
+    private GameObject lastCanvas;
+    
+    void Awake() {
+        if (Instance != null && Instance != this) {
+            Destroy(gameObject);
+            return;
+        }
+        else {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
     private void Start()
     {
         InitializeUI();
@@ -36,6 +49,7 @@ public class UIManager : MonoBehaviour
         UI.SetActive(false);
         startCanvas.SetActive(true);
         Time.timeScale = 0; 
+        lastCanvas = startCanvas;
     }
 
     public void Settings()
@@ -56,6 +70,7 @@ public class UIManager : MonoBehaviour
         winCanvas.SetActive(false);
         UI.SetActive(true);
         Time.timeScale = 1;
+        lastCanvas = null;
     }
 
     public void Quit()
@@ -66,6 +81,7 @@ public class UIManager : MonoBehaviour
     public void Resume()
     {
         pauseCanvas.SetActive(false);
+        UI.SetActive(true);
         Time.timeScale = 1;
     }
 
@@ -74,23 +90,28 @@ public class UIManager : MonoBehaviour
         pauseCanvas.SetActive(true);
         UI.SetActive(false);
         Time.timeScale = 0;
+        lastCanvas = pauseCanvas;
     }
 
-    public void SettingsToStart()
+    public void BackFromSettings()
     {
         settingsCanvas.SetActive(false);
-        startCanvas.SetActive(true);
+        lastCanvas.SetActive(true);
+
     }
+
 
     public void Death()
     {
         deathCanvas.SetActive(true);
         Time.timeScale = 0;
+        lastCanvas = deathCanvas;
     }
 
     public void Win()
     {
         winCanvas.SetActive(true);
         Time.timeScale = 0;
+        lastCanvas = winCanvas;
     }
 }

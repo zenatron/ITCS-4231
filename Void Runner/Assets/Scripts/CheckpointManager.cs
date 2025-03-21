@@ -19,6 +19,7 @@ public class CheckpointManager : MonoBehaviour
     /// <summary>list of all checkpoints in the scene</summary>
     private List<Checkpoint> checkpoints = new List<Checkpoint>();
     [SerializeField] private Transform playerTransform;
+    private Rigidbody rb;
     
     private void Awake()
     {
@@ -29,6 +30,7 @@ public class CheckpointManager : MonoBehaviour
     /// <summary>checkpoint setup on start</summary>
     private void Start()
     {
+        rb = playerTransform.GetComponent<Rigidbody>();
         // Reset checkpoint state
         checkpointState.lastCheckpointID = 0;
         checkpointState.lastCheckpointPosition = playerTransform.position;
@@ -100,5 +102,9 @@ public class CheckpointManager : MonoBehaviour
     public int GetCurrentCheckpoint()
     {
         return checkpointState.lastCheckpointID; //yay arrow functions
+    public void RespawnPlayer() {
+        playerTransform.position = checkpointState.lastCheckpointPosition;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
     }
 }

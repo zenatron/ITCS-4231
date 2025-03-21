@@ -10,6 +10,7 @@ public class PlayerCollision : MonoBehaviour
         {
             Debug.Log("Player is DEAD!");
             AudioManager.Instance.PlayDeathSFX();
+            UIManager.Instance.Death();
         }
     }
 }

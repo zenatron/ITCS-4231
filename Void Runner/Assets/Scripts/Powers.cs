@@ -13,7 +13,6 @@ public class Powers : MonoBehaviour
         tf = GetComponent<Transform>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (invertGravity) {
@@ -39,6 +38,10 @@ public class Powers : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
             rb.AddForce(0, 5, 0, ForceMode.Impulse);
             isGrounded = false;
+        }
+        
+        if (Time.timeScale == 0) {
+            invertGravity = false;
         }
 
     }
