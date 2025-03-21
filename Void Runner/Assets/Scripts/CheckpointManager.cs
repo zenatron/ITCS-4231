@@ -96,4 +96,9 @@ public class CheckpointManager : MonoBehaviour
         int nextCheckpointID = checkpointState.lastCheckpointID + 1;
         return checkpoints.Find(cp => cp.checkpointID == nextCheckpointID); //yay arrow functions
     }
+
+    public int GetCurrentCheckpoint()
+    {
+        return checkpointState.lastCheckpointID; //yay arrow functions
+    }
 }

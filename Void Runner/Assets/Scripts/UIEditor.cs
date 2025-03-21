@@ -41,11 +41,3 @@ class Timer : MonoBehaviour
 
     }
 }
-
-/*[CreateAssetMenu(fileName = "UIEditor", menuName = "Scriptable Objects/CheckpointState")]
-class CheckpointState : ScriptableObject
-{
-    public int lastCheckpointID;
-    public Vector3 lastCheckpointPosition;
-}
-*/
