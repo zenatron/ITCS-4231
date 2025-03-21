@@ -102,8 +102,10 @@ public class CheckpointManager : MonoBehaviour
     public int GetCurrentCheckpoint()
     {
         return checkpointState.lastCheckpointID; //yay arrow functions
+    }
+
     public void RespawnPlayer() {
-        playerTransform.position = checkpointState.lastCheckpointPosition;
+        playerTransform.position = GetRespawnPosition();
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
     }
