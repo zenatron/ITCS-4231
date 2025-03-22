@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject pauseCanvas;
     [SerializeField] private GameObject UI;
     private GameObject lastCanvas;
+    private bool isFullscreen = true;
     
     void Awake() {
         if (Instance != null && Instance != this) {
@@ -50,6 +51,17 @@ public class UIManager : MonoBehaviour
         startCanvas.SetActive(true);
         Time.timeScale = 0; 
         lastCanvas = startCanvas;
+    }
+
+    public void ScreenMode() {
+        isFullscreen =!isFullscreen;
+        Screen.fullScreen = isFullscreen;
+
+        if (isFullscreen) {
+            Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, FullScreenMode.MaximizedWindow);
+        } else {
+            Screen.SetResolution(800, 600, FullScreenMode.Windowed);
+        }
     }
 
     public void Settings()
