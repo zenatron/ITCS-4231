@@ -35,7 +35,18 @@ public class PlayerMovement : MonoBehaviour
         // create movement direction relative to camera
         Vector3 moveDirection = (camForward * vertical + camRight * horizontal).normalized;
 
-        // calculate target velocity
-        rb.AddForce(moveDirection * accelerationForce, ForceMode.Force);
+        // current velocity vector
+        Vector3 currentVelocity = rb.linearVelocity;
+
+        // multiply braking force
+        if (Input.GetKey(KeyCode.C))
+        {
+            rb.AddForce(-currentVelocity * 4 * accelerationForce, ForceMode.Force);
+        }
+        else
+        {
+            // calculate target velocity
+            rb.AddForce(moveDirection * accelerationForce, ForceMode.Force);
+        }
     }
 }
