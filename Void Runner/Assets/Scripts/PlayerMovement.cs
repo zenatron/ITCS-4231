@@ -9,6 +9,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Assign the Main Camera Here")]
     [SerializeField] private Transform mainCameraTransform;
 
+    private bool isFast = false; 
+    private bool isSlow = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -23,6 +26,27 @@ public class PlayerMovement : MonoBehaviour
     {
         float horizontal = Input.GetAxis("Horizontal"); // A/D or Left/Right arrow
         float vertical = Input.GetAxis("Vertical"); // W/S or Up/Down arrow
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) {
+            if (isFast) {
+                ResetSpeed();
+                Debug.Log("Reset Speed");
+            } else {
+                Fast();
+                Debug.Log("Fast");
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3)){
+            if (isSlow) {
+                ResetSpeed();
+                Debug.Log("Reset Speed");
+            } else {
+                Slow();
+                Debug.Log("Slow");
+            }
+        }
+
 
         // Get camera's forward and right directions
         Vector3 camForward = mainCameraTransform.forward;
@@ -48,5 +72,27 @@ public class PlayerMovement : MonoBehaviour
             // calculate target velocity
             rb.AddForce(moveDirection * accelerationForce, ForceMode.Force);
         }
+
+        
+    }
+
+    private void Fast() {
+        rb.linearDamping = 0f;
+        accelerationForce *= 1.5f;
+        isFast = true;
+        isSlow = false;
+    }
+
+    private void Slow() {
+        rb.linearDamping = 5f;
+        isFast = false;
+        isSlow = true;
+    }
+
+    private void ResetSpeed() {
+        rb.linearDamping = 3f;
+        accelerationForce = 3f;
+        isFast = false;
+        isSlow = false;
     }
 }
