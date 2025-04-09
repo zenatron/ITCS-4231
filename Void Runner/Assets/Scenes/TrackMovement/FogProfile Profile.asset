@@ -27,7 +27,7 @@ MonoBehaviour:
     m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   tint:
     m_OverrideState: 1
-    m_Value: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 1}
+    m_Value: {r: 0.039546236, g: 0.039546236, b: 0.039546236, a: 1}
   maxFogDistance:
     m_OverrideState: 0
     m_Value: 5000
