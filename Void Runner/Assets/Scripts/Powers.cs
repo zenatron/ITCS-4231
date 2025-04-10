@@ -13,14 +13,19 @@ public class Powers : MonoBehaviour
         tf = GetComponent<Transform>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (invertGravity) {
             rb.AddForce(-2*Physics.gravity, ForceMode.Acceleration);
         }
+
+        Vector3 down = Vector3.down;
+
+        if (invertGravity) {
+            down = Vector3.up;
+        }
+
         RaycastHit isFloor;
-        Vector3 down = tf.TransformDirection(Vector3.down);
 
         if (Physics.Raycast(tf.position, down, out isFloor, 0.6f)) {
             isGrounded = true;
@@ -37,8 +42,12 @@ public class Powers : MonoBehaviour
             invertGravity = !invertGravity;
         }
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
-            rb.AddForce(0, 5, 0, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * (invertGravity ? -5 : 5), ForceMode.Impulse);
             isGrounded = false;
+        }
+        
+        if (Time.timeScale == 0) {
+            invertGravity = false;
         }
 
     }

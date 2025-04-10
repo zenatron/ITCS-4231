@@ -6,38 +6,93 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float accelerationForce = 3f;
     [SerializeField] private float maxSpeed = 10f;
 
+    [Header("Assign the Main Camera Here")]
+    [SerializeField] private Transform mainCameraTransform;
+
+    private bool isFast = false; 
+    private bool isSlow = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    void Update()
+    // private void Update()
+    // {
+    //     MovePlayer();
+    // }
+
+    private void FixedUpdate()
     {
-        MovePlayer();
+        float horizontal = Input.GetAxis("Horizontal"); // A/D or Left/Right arrow
+        float vertical = Input.GetAxis("Vertical"); // W/S or Up/Down arrow
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) {
+            if (isFast) {
+                ResetSpeed();
+                Debug.Log("Reset Speed");
+            } else {
+                Fast();
+                Debug.Log("Fast");
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3)){
+            if (isSlow) {
+                ResetSpeed();
+                Debug.Log("Reset Speed");
+            } else {
+                Slow();
+                Debug.Log("Slow");
+            }
+        }
+
+
+        // Get camera's forward and right directions
+        Vector3 camForward = mainCameraTransform.forward;
+        Vector3 camRight = mainCameraTransform.right;
+
+        // ignore y component
+        camForward.y = 0;
+        camRight.y = 0;
+
+        // create movement direction relative to camera
+        Vector3 moveDirection = (camForward * vertical + camRight * horizontal).normalized;
+
+        // current velocity vector
+        Vector3 currentVelocity = rb.linearVelocity;
+
+        // multiply braking force
+        if (Input.GetKey(KeyCode.C))
+        {
+            rb.AddForce(-currentVelocity * 4 * accelerationForce, ForceMode.Force);
+        }
+        else
+        {
+            // calculate target velocity
+            rb.AddForce(moveDirection * accelerationForce, ForceMode.Force);
+        }
+
+        
     }
 
-    void MovePlayer()
-    {
-        if (rb.linearVelocity.magnitude > maxSpeed)
-        {
-            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            rb.AddForce(Vector3.forward * accelerationForce, ForceMode.Acceleration);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            rb.AddForce(Vector3.back * accelerationForce, ForceMode.Acceleration);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            rb.AddForce(Vector3.left * accelerationForce, ForceMode.Acceleration);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            rb.AddForce(Vector3.right * accelerationForce, ForceMode.Acceleration);
-        }
-        //Debug.Log("Player Linear Velocity: " + rb.linearVelocity.magnitude);
+    private void Fast() {
+        rb.linearDamping = 0f;
+        accelerationForce *= 1.5f;
+        isFast = true;
+        isSlow = false;
+    }
+
+    private void Slow() {
+        rb.linearDamping = 5f;
+        isFast = false;
+        isSlow = true;
+    }
+
+    private void ResetSpeed() {
+        rb.linearDamping = 3f;
+        accelerationForce = 3f;
+        isFast = false;
+        isSlow = false;
     }
 }
