@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//TODO: Link PlayUI, Figure out Retry button
-
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance {get; private set;}
@@ -118,6 +116,7 @@ public class UIManager : MonoBehaviour
         deathCanvas.SetActive(true);
         Time.timeScale = 0;
         lastCanvas = deathCanvas;
+        Powers.Instance.currPower = Power.Normal;
     }
 
     public void Win()
