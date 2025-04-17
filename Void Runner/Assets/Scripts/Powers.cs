@@ -141,9 +141,12 @@ public class Powers : MonoBehaviour
     }
 
     private void Jump() {
-        if (isGrounded) {
+        if (groundedDown) {
             rb.AddForce(Vector3.up * 5, ForceMode.Impulse);
             isGrounded = false;
+        } else {
+            rb.AddForce(Vector3.down * 10, ForceMode.Impulse);
+            isGrounded = false; 
         }
     }
 
