@@ -1,10 +1,10 @@
 using UnityEngine;
 
 public enum Power {
+    Default,
     Fast,
     Slow,
     Inverted,
-    Normal
 }
 
 public class Powers : MonoBehaviour
@@ -12,11 +12,12 @@ public class Powers : MonoBehaviour
     public static Powers Instance {get; private set;}
     private Rigidbody rb;
     private Transform tf;
-    //public bool inverted false;
     public bool isGrounded = true;
 
-    public Power currPower = Power.Normal;
-    public Vector3 down = Vector3.down;
+    public Power currPower = Power.Default;
+    [SerializeField] private float groundCheckDistance = 0.6f;
+    private bool groundedDown = false; // Track if grounded from down raycast
+    private bool groundedUp = false;   // Track if grounded from up raycast
 
     void Awake() {
         if (Instance != null && Instance != this) {
@@ -40,29 +41,44 @@ public class Powers : MonoBehaviour
         // jumping check
         RaycastHit isFloor;
 
-        if (Physics.Raycast(tf.position, down, out isFloor, 0.6f)) {
-            isGrounded = true;
-            Debug.DrawLine(tf.position, isFloor.point, Color.green);
-        } else {
-            isGrounded = false;
-            Debug.DrawLine(tf.position, tf.position + down * 0.5f, Color.red);
-        }
+        groundedDown = Physics.Raycast(tf.position, Vector3.down, out isFloor, groundCheckDistance);
+        groundedUp = Physics.Raycast(tf.position, Vector3.up, out isFloor, groundCheckDistance);
+        
+        isGrounded = groundedDown || groundedUp;
+    }
 
+    void OnDrawGizmos()
+    {
+        // Only draw if we have a transform component
+        if (tf == null) return;
+        
+        // Draw ground check rays
+        if (groundedDown) {
+            Gizmos.color = Color.green;
+        } else {
+            Gizmos.color = Color.red;
+        }
+        Gizmos.DrawLine(tf.position, tf.position + Vector3.down * groundCheckDistance);
+        
+        if (groundedUp) {
+            Gizmos.color = Color.green;
+        } else {
+            Gizmos.color = Color.red;
+        }
+        Gizmos.DrawLine(tf.position, tf.position + Vector3.up * groundCheckDistance);
     }
 
     void Update() {
         
-
         switch (currPower) {
-            case Power.Normal:
-                ResetSpeed();
+            case Power.Default:
+                SetDefaultPhysics();
                 if (Input.GetKeyDown(KeyCode.J)) {
                     currPower = Power.Fast;
                 }
 
                 if (Input.GetKeyDown(KeyCode.K)) {
                     currPower = Power.Inverted;
-                    down *= -1;
                 }
 
                 if (Input.GetKeyDown(KeyCode.L)) {
@@ -71,14 +87,13 @@ public class Powers : MonoBehaviour
                 break;
 
             case Power.Fast:
-                Fast();
+                FastAbility();
                 if (Input.GetKeyDown(KeyCode.J)) {
-                    currPower = Power.Normal;
+                    currPower = Power.Default;
                 }
 
                 if (Input.GetKeyDown(KeyCode.K)) {
                     currPower = Power.Inverted;
-                    down *= -1;
                 }
 
                 if (Input.GetKeyDown(KeyCode.L)) {
@@ -87,31 +102,29 @@ public class Powers : MonoBehaviour
                 break;
             
             case Power.Slow:
-                Slow();
+                SlowAbility();
                 if (Input.GetKeyDown(KeyCode.J)) {
                     currPower = Power.Fast;
                 }
 
                 if (Input.GetKeyDown(KeyCode.K)) {
                     currPower = Power.Inverted;
-                    down *= -1;
                 }
 
                 if (Input.GetKeyDown(KeyCode.L)) {
-                    currPower = Power.Normal;
+                    currPower = Power.Default;
                 }
                 break;
             
             case Power.Inverted:
-                Invert();
-                ResetSpeed();
+                InvertAbility();
+                SetDefaultPhysics();
                 if (Input.GetKeyDown(KeyCode.J)) {
                     currPower = Power.Fast;
                 }
 
                 if (Input.GetKeyDown(KeyCode.K)) {
-                    currPower = Power.Normal;
-                    down *= -1;
+                    currPower = Power.Default;
                 }
 
                 if (Input.GetKeyDown(KeyCode.L)) {
@@ -123,30 +136,30 @@ public class Powers : MonoBehaviour
 
         // jumping
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
-            rb.AddForce(Vector3.up * (currPower == Power.Inverted ? -5 : 5), ForceMode.Impulse);
-            isGrounded = false;
+            Jump();
         }
-        
-
     }
 
-    private void Fast() {
+    private void Jump() {
+        if (isGrounded) {
+            rb.AddForce(Vector3.up * 5, ForceMode.Impulse);
+            isGrounded = false;
+        }
+    }
+
+    private void SetDefaultPhysics() {
+        rb.linearDamping = 1f; // mess around with this
+        rb.mass = 1f; 
+    }
+    private void FastAbility() {
         rb.linearDamping = 7f; // mess around with this
         rb.mass = 0.33f;
     }
-
-    private void Invert() {
-        rb.AddForce(-2*Physics.gravity, ForceMode.Acceleration);
-    }
-
-    private void Slow() {
+    private void SlowAbility() {
         rb.linearDamping = 5f; // mess around with this
         rb.mass = 3f;
     }
-
-    private void ResetSpeed() {
-        rb.linearDamping = 3f; // mess around with this
-        rb.mass = 1f; 
+    private void InvertAbility() {
+        rb.AddForce(-2*Physics.gravity, ForceMode.Acceleration);
     }
-
 }

@@ -116,7 +116,7 @@ public class UIManager : MonoBehaviour
         deathCanvas.SetActive(true);
         Time.timeScale = 0;
         lastCanvas = deathCanvas;
-        Powers.Instance.currPower = Power.Normal;
+        Powers.Instance.currPower = Power.Default;
     }
 
     public void Win()
