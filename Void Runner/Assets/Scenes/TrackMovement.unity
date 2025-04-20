@@ -992,6 +992,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   swaySpeed: 1
   swayAmount: 15
+  positionSwayAmount: 25
 --- !u!114 &200831938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10806,8 +10807,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db38eb6b43f214cca98e79c3d7b7e414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 10
+  swaySpeed: 5
   swayAmount: 15
+  positionSwayAmount: 25
 --- !u!114 &2024639531
 MonoBehaviour:
   m_ObjectHideFlags: 0
