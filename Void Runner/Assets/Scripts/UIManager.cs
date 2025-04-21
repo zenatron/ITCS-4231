@@ -12,7 +12,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject pauseCanvas;
     [SerializeField] private GameObject UI;
     private GameObject lastCanvas;
-    private bool isFullscreen = true;
+    private bool isFullscreen;
+    private bool showFPS_UI;
+    private GameObject FPS_UI;
     
     void Awake() {
         if (Instance != null && Instance != this) {
@@ -26,6 +28,9 @@ public class UIManager : MonoBehaviour
     }
     private void Start()
     {
+        FPS_UI = GameObject.Find("FPSDisplay");
+        isFullscreen = true;
+        showFPS_UI = false;
         InitializeUI();
     }
 
@@ -60,6 +65,11 @@ public class UIManager : MonoBehaviour
         } else {
             Screen.SetResolution(800, 600, FullScreenMode.Windowed);
         }
+    }
+
+    public void FPSToggle() {
+        showFPS_UI = !showFPS_UI;
+        FPS_UI.SetActive(showFPS_UI);
     }
 
     public void Settings()
