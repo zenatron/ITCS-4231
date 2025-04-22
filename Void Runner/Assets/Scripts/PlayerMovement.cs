@@ -3,8 +3,11 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private float accelerationForce = 3f;
-    [SerializeField] private float maxSpeed = 10f;
+
+    [SerializeField] private float baseAcceleration = 3f;
+    [SerializeField] private float baseMaxSpeed = 10f;
+    [SerializeField] private float accelerationForce;
+    [SerializeField] private float maxSpeed;
 
     [Header("Assign the Main Camera Here")]
     [SerializeField] private Transform mainCameraTransform;
@@ -21,6 +24,25 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        switch (Powers.Instance.currPower) {
+            case Power.Fast:
+                accelerationForce = baseAcceleration * 2f;
+                maxSpeed = baseMaxSpeed * 1.5f;
+                break;
+
+            case Power.Slow:
+                accelerationForce = baseAcceleration;
+                maxSpeed = baseMaxSpeed * 0.5f;
+                break;
+
+            default:
+                accelerationForce = baseAcceleration;
+                maxSpeed = baseMaxSpeed;
+                break;
+        }
+        
+        
+        
         float horizontal = Input.GetAxis("Horizontal"); // A/D or Left/Right arrow
         float vertical = Input.GetAxis("Vertical"); // W/S or Up/Down arrow
 

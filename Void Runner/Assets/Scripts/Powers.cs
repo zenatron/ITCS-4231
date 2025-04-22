@@ -18,6 +18,7 @@ public class Powers : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 0.6f;
     private bool groundedDown = false; // Track if grounded from down raycast
     private bool groundedUp = false;   // Track if grounded from up raycast
+    private float speed;
 
     void Awake() {
         if (Instance != null && Instance != this) {
@@ -34,6 +35,7 @@ public class Powers : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         tf = GetComponent<Transform>();
+        
     }
 
     void FixedUpdate()
@@ -72,7 +74,6 @@ public class Powers : MonoBehaviour
         
         switch (currPower) {
             case Power.Default:
-                SetDefaultPhysics();
                 if (Input.GetKeyDown(KeyCode.J)) {
                     currPower = Power.Fast;
                 }
@@ -87,7 +88,6 @@ public class Powers : MonoBehaviour
                 break;
 
             case Power.Fast:
-                FastAbility();
                 if (Input.GetKeyDown(KeyCode.J)) {
                     currPower = Power.Default;
                 }
@@ -102,7 +102,6 @@ public class Powers : MonoBehaviour
                 break;
             
             case Power.Slow:
-                SlowAbility();
                 if (Input.GetKeyDown(KeyCode.J)) {
                     currPower = Power.Fast;
                 }
@@ -118,7 +117,6 @@ public class Powers : MonoBehaviour
             
             case Power.Inverted:
                 InvertAbility();
-                SetDefaultPhysics();
                 if (Input.GetKeyDown(KeyCode.J)) {
                     currPower = Power.Fast;
                 }
@@ -148,19 +146,6 @@ public class Powers : MonoBehaviour
             rb.AddForce(Vector3.down * 10, ForceMode.Impulse);
             isGrounded = false; 
         }
-    }
-
-    private void SetDefaultPhysics() {
-        rb.linearDamping = 1f; // mess around with this
-        rb.mass = 1f; 
-    }
-    private void FastAbility() {
-        rb.linearDamping = 7f; // mess around with this
-        rb.mass = 0.33f;
-    }
-    private void SlowAbility() {
-        rb.linearDamping = 5f; // mess around with this
-        rb.mass = 3f;
     }
     private void InvertAbility() {
         rb.AddForce(-2*Physics.gravity, ForceMode.Acceleration);
