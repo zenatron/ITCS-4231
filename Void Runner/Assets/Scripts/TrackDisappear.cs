@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class TrackDisappear : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
+    [SerializeField] private Material trackMaterial;
+    [SerializeField] private Material invisibleMaterial;
     bool Dcheck = false;
     float timer = 0.0f;
     Collider other;
@@ -48,7 +48,10 @@ public class TrackDisappear : MonoBehaviour
     {
         for (int i = 0; i < checkpoint.transform.childCount; i++)//for every track in the section, disables its visibility
         {
-            checkpoint.transform.GetChild(i).gameObject.GetComponent<Renderer>().enabled = visible;
+            if (visible)
+                checkpoint.transform.GetChild(i).gameObject.GetComponent<Renderer>().material = trackMaterial;
+            else
+                checkpoint.transform.GetChild(i).gameObject.GetComponent<Renderer>().material = invisibleMaterial;
         }
     }
 }

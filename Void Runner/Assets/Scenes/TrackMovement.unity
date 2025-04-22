@@ -1709,6 +1709,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d00e313c12abc1c47a773d09151cdae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trackMaterial: {fileID: 2100000, guid: 02f0ca4112793e548a3de018a7ce9d80, type: 2}
+  invisibleMaterial: {fileID: 2100000, guid: 7316a37c96e1b4eb49babf09b864bef1, type: 2}
 --- !u!1 &361592557
 GameObject:
   m_ObjectHideFlags: 1
@@ -10170,8 +10172,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1939491055}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15212335, y: -0.000000034385806, z: 0.00000000529248, w: 0.98836154}
-  m_LocalPosition: {x: 8.27, y: 3.9070582, z: -17.84717}
+  m_LocalRotation: {x: 0.17364821, y: 6.79041e-16, z: -1.1973326e-16, w: 0.9848078}
+  m_LocalPosition: {x: 0, y: 11.970704, z: -32.88924}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
