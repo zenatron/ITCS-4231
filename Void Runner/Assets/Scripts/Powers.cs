@@ -4,7 +4,7 @@ public enum Power {
     Default,
     Fast,
     Slow,
-    Inverted,
+    Inverted
 }
 
 public class Powers : MonoBehaviour

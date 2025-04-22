@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TextSway : MonoBehaviour
 {
-    public float swaySpeed = 10f;
+    public float swaySpeed = 1f;
     public float swayAmount = 15f;
     public float positionSwayAmount = 25f;
 
