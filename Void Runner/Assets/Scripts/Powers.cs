@@ -143,11 +143,11 @@ public class Powers : MonoBehaviour
             rb.AddForce(Vector3.up * 5, ForceMode.Impulse);
             isGrounded = false;
         } else {
-            rb.AddForce(Vector3.down * 10, ForceMode.Impulse);
+            rb.AddForce(Vector3.down * 5, ForceMode.Impulse);
             isGrounded = false; 
         }
     }
     private void InvertAbility() {
-        rb.AddForce(-2*Physics.gravity, ForceMode.Acceleration);
+        rb.AddForce(-1*Physics.gravity, ForceMode.Acceleration);
     }
 }

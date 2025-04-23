@@ -55,3 +55,7 @@ public class TrackDisappear : MonoBehaviour
         }
     }
 }
+
+// BUGS:
+//      makes tracks you're on invisible
+//      on respawn, doesn't make visible then invisible
