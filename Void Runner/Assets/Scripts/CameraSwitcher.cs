@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Cinemachine;
+using UnityEngine.InputSystem;
 
 public class CameraSwitcher : MonoBehaviour
 {
@@ -16,7 +17,10 @@ public class CameraSwitcher : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab)) // Press Tab to switch cameras
+        // get camera switch input
+        bool switchCamera = InputSystem.actions.FindAction("SwitchCamera", throwIfNotFound: true).triggered;
+
+        if (switchCamera)
         {
             isFollowing = !isFollowing;
 

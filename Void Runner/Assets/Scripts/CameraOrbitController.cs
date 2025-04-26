@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Cinemachine;
+using UnityEngine.InputSystem;
 
 public class CameraOrbitController : MonoBehaviour
 {
@@ -16,16 +17,12 @@ public class CameraOrbitController : MonoBehaviour
 
     private void Awake()
     {
-        if (!cineCam)
-        {
+        if (!cineCam) {
             Debug.LogError("No CinemachineCamera assigned!");
             return;
         }
 
         orbitalFollow = cineCam.GetComponent<CinemachineOrbitalFollow>();
-
-        if (!orbitalFollow)
-            Debug.LogError("CinemachineOrbitalFollow not found on this camera!");
     }
     
     private void Start()
@@ -41,22 +38,11 @@ public class CameraOrbitController : MonoBehaviour
             inputController = cineCam.GetComponent<CinemachineInputAxisController>();
 
         // Start with camera movement disabled until player holds LMB.
-        inputController.enabled = false;
+        //inputController.enabled = true;
     }
 
     private void Update()
     {
-        if (!orbitalFollow)
-            return;
-
-         // While LMB held, enable input.
-        if (Input.GetMouseButtonDown(0))
-            inputController.enabled = true;
-        
-        // While LMB released, disable input.
-        if (Input.GetMouseButtonUp(0))
-            inputController.enabled = false;
-
         HandleZoom();
     }
 

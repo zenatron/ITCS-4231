@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
 
+    [Header("Player Movement")]
     [SerializeField] private float baseAcceleration = 3f;
     [SerializeField] private float baseMaxSpeed = 10f;
     [SerializeField] private float accelerationForce;
@@ -16,11 +18,6 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
     }
-
-    // private void Update()
-    // {
-    //     MovePlayer();
-    // }
 
     private void FixedUpdate()
     {
@@ -41,10 +38,10 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
         
-        
-        
-        float horizontal = Input.GetAxis("Horizontal"); // A/D or Left/Right arrow
-        float vertical = Input.GetAxis("Vertical"); // W/S or Up/Down arrow
+
+        Vector2 movement = InputSystem.actions.FindAction("Move", throwIfNotFound: true).ReadValue<Vector2>();
+        float horizontal = movement.x;
+        float vertical = movement.y;
 
         // Get camera's forward and right directions
         Vector3 camForward = mainCameraTransform.forward;
@@ -60,17 +57,18 @@ public class PlayerMovement : MonoBehaviour
         // current velocity vector
         Vector3 currentVelocity = rb.linearVelocity;
 
-        // multiply braking force
-        if (Input.GetKey(KeyCode.C))
+        // get brake force
+        float brakeForce = InputSystem.actions.FindAction("Brake", throwIfNotFound: true).ReadValue<float>();
+        
+        // apply brake force
+        if (brakeForce > 0)
         {
-            rb.AddForce(-currentVelocity * 4 * accelerationForce, ForceMode.Force);
+            rb.AddForce(-currentVelocity * 4 * accelerationForce * brakeForce, ForceMode.Force);
         }
         else
         {
             // calculate target velocity
             rb.AddForce(moveDirection * accelerationForce, ForceMode.Force);
         }
-
-        
     }
 }

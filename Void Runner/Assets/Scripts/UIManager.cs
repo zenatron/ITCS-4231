@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UIManager : MonoBehaviour
 {
@@ -34,13 +35,15 @@ public class UIManager : MonoBehaviour
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+
+        // get pause menu input
+        InputSystem.actions.FindAction("Pause", throwIfNotFound: true).performed += ctx => {
             if (!pauseCanvas.activeInHierarchy) {
                 Pause();
             } else {
                 Resume();
             }
-        }
+        };
     }
 
     public void InitializeUI()

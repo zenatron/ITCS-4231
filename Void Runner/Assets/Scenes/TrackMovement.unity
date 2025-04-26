@@ -2078,7 +2078,7 @@ MonoBehaviour:
       Enabled: 1
       Input:
         InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
-        Gain: 5
+        Gain: 2
         LegacyInput: 
         LegacyGain: 1
         CancelDeltaTime: 0
@@ -2091,7 +2091,7 @@ MonoBehaviour:
       Enabled: 1
       Input:
         InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
-        Gain: -5
+        Gain: -2
         LegacyInput: 
         LegacyGain: 1
         CancelDeltaTime: 0
@@ -2179,7 +2179,7 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   OrbitStyle: 0
-  Radius: 35
+  Radius: 30
   Orbits:
     Top:
       Radius: 2
@@ -2274,7 +2274,7 @@ Transform:
   m_GameObject: {fileID: 475013641}
   serializedVersion: 2
   m_LocalRotation: {x: 0.17364818, y: 6.6111176e-16, z: -1.8052052e-17, w: 0.9848078}
-  m_LocalPosition: {x: 0, y: 11.970704, z: -32.88924}
+  m_LocalPosition: {x: 0, y: 10.260604, z: -28.190779}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5784,7 +5784,7 @@ MonoBehaviour:
       Enabled: 1
       Input:
         InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
-        Gain: 5
+        Gain: 2
         LegacyInput: 
         LegacyGain: 1
         CancelDeltaTime: 0
@@ -5797,7 +5797,7 @@ MonoBehaviour:
       Enabled: 1
       Input:
         InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
-        Gain: -5
+        Gain: -2
         LegacyInput: 
         LegacyGain: 1
         CancelDeltaTime: 0
@@ -5869,7 +5869,7 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   OrbitStyle: 0
-  Radius: 10
+  Radius: 5
   Orbits:
     Top:
       Radius: 2
@@ -5964,7 +5964,7 @@ Transform:
   m_GameObject: {fileID: 1054507199}
   serializedVersion: 2
   m_LocalRotation: {x: 0.15212335, y: -0.000000035926195, z: 0.00000001530054, w: 0.98836154}
-  m_LocalPosition: {x: 8.27, y: 3.6975582, z: -17.84717}
+  m_LocalPosition: {x: 8.27, y: 2.194029, z: -13.078585}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9559,7 +9559,7 @@ Transform:
   m_GameObject: {fileID: 1939491055}
   serializedVersion: 2
   m_LocalRotation: {x: 0.15212335, y: -0.000000034385806, z: 0.00000000529248, w: 0.98836154}
-  m_LocalPosition: {x: 8.27, y: 3.6975582, z: -17.84717}
+  m_LocalPosition: {x: 8.27, y: 2.194029, z: -13.078585}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
