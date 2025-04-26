@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum Power {
     Default,
@@ -20,6 +21,12 @@ public class Powers : MonoBehaviour
     private bool groundedUp = false;   // Track if grounded from up raycast
     private float speed;
 
+    private InputAction ability1Action;
+    private InputAction ability2Action;
+    private InputAction ability3Action;
+    private InputAction ability4Action;
+    private InputAction jumpAction;
+
     void Awake() {
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
@@ -36,6 +43,14 @@ public class Powers : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         tf = GetComponent<Transform>();
         
+    }
+
+    private void OnEnable() {
+        ability1Action = InputSystem.actions.FindAction("Ability1", throwIfNotFound: true);
+        ability2Action = InputSystem.actions.FindAction("Ability2", throwIfNotFound: true);
+        ability3Action = InputSystem.actions.FindAction("Ability3", throwIfNotFound: true);
+        ability4Action = InputSystem.actions.FindAction("Ability4", throwIfNotFound: true);
+        jumpAction = InputSystem.actions.FindAction("Jump", throwIfNotFound: true);
     }
 
     void FixedUpdate()
@@ -71,61 +86,63 @@ public class Powers : MonoBehaviour
     }
 
     void Update() {
-        
+
+
+        // actions
         switch (currPower) {
             case Power.Default:
-                if (Input.GetKeyDown(KeyCode.J)) {
+                if (ability1Action.triggered) {
                     currPower = Power.Fast;
                 }
 
-                if (Input.GetKeyDown(KeyCode.K)) {
+                if (ability2Action.triggered) {
                     currPower = Power.Inverted;
                 }
 
-                if (Input.GetKeyDown(KeyCode.L)) {
+                if (ability3Action.triggered) {
                     currPower = Power.Slow;
                 }
                 break;
 
             case Power.Fast:
-                if (Input.GetKeyDown(KeyCode.J)) {
+                if (ability1Action.triggered) {
                     currPower = Power.Default;
                 }
 
-                if (Input.GetKeyDown(KeyCode.K)) {
+                if (ability2Action.triggered) {
                     currPower = Power.Inverted;
                 }
 
-                if (Input.GetKeyDown(KeyCode.L)) {
+                if (ability3Action.triggered) {
                     currPower = Power.Slow;
                 }
                 break;
             
             case Power.Slow:
-                if (Input.GetKeyDown(KeyCode.J)) {
+                if (ability1Action.triggered) {
                     currPower = Power.Fast;
                 }
 
-                if (Input.GetKeyDown(KeyCode.K)) {
+                if (ability2Action.triggered) {
                     currPower = Power.Inverted;
                 }
 
-                if (Input.GetKeyDown(KeyCode.L)) {
+                if (ability3Action.triggered) {
                     currPower = Power.Default;
                 }
                 break;
             
             case Power.Inverted:
                 InvertAbility();
-                if (Input.GetKeyDown(KeyCode.J)) {
+                if (ability1Action.triggered) {
                     currPower = Power.Fast;
                 }
 
-                if (Input.GetKeyDown(KeyCode.K)) {
+                if (ability2Action.triggered) {
                     currPower = Power.Default;
                 }
 
-                if (Input.GetKeyDown(KeyCode.L)) {
+                if (ability3Action.triggered) {
                     currPower = Power.Slow;
                 }
                 break;
@@ -133,7 +150,7 @@ public class Powers : MonoBehaviour
 
 
         // jumping
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
+        if (jumpAction.triggered && isGrounded) {
             Jump();
         }
     }
