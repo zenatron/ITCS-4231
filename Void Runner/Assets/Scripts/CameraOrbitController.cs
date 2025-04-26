@@ -48,6 +48,7 @@ public class CameraOrbitController : MonoBehaviour
 
     private void HandleZoom()
     {
+        // Haven't figured out an elegant way to do this with the new Input System yet
         // Read mouse scroll input
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (Mathf.Abs(scroll) > 0.01f)

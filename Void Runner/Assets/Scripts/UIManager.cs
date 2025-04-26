@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,6 +14,7 @@ public class UIManager : MonoBehaviour
     private bool isFullscreen;
     private bool showFPS_UI;
     public GameObject FPS_UI;
+    private InputAction pauseAction;
     
     void Awake() {
         if (Instance != null && Instance != this) {
@@ -27,23 +26,31 @@ public class UIManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-    private void Start()
-    {
+    private void Start() {
         isFullscreen = true;
         showFPS_UI = false;
         InitializeUI();
     }
 
     private void Update() {
+    }
 
-        // get pause menu input
-        InputSystem.actions.FindAction("Pause", throwIfNotFound: true).performed += ctx => {
-            if (!pauseCanvas.activeInHierarchy) {
-                Pause();
-            } else {
-                Resume();
-            }
-        };
+    private void OnEnable () {
+        pauseAction = InputSystem.actions.FindAction("Pause", throwIfNotFound: true);
+        pauseAction.performed += OnPausePerformed;
+    }
+
+    private void OnDisable() {
+        pauseAction.performed -= OnPausePerformed;
+    }
+
+    private void OnPausePerformed(InputAction.CallbackContext ctx)
+    {
+        if (!pauseCanvas.activeInHierarchy) {
+            Pause();
+        } else {
+            Resume();
+        }
     }
 
     public void InitializeUI()

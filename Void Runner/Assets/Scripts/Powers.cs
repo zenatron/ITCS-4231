@@ -21,6 +21,12 @@ public class Powers : MonoBehaviour
     private bool groundedUp = false;   // Track if grounded from up raycast
     private float speed;
 
+    private InputAction ability1Action;
+    private InputAction ability2Action;
+    private InputAction ability3Action;
+    private InputAction ability4Action;
+    private InputAction jumpAction;
+
     void Awake() {
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
@@ -37,6 +43,14 @@ public class Powers : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         tf = GetComponent<Transform>();
         
+    }
+
+    private void OnEnable() {
+        ability1Action = InputSystem.actions.FindAction("Ability1", throwIfNotFound: true);
+        ability2Action = InputSystem.actions.FindAction("Ability2", throwIfNotFound: true);
+        ability3Action = InputSystem.actions.FindAction("Ability3", throwIfNotFound: true);
+        ability4Action = InputSystem.actions.FindAction("Ability4", throwIfNotFound: true);
+        jumpAction = InputSystem.actions.FindAction("Jump", throwIfNotFound: true);
     }
 
     void FixedUpdate()
@@ -72,69 +86,63 @@ public class Powers : MonoBehaviour
     }
 
     void Update() {
-        // ability actions
-        bool ability1 = InputSystem.actions.FindAction("Ability1", throwIfNotFound: true).triggered;
-        bool ability2 = InputSystem.actions.FindAction("Ability2", throwIfNotFound: true).triggered;
-        bool ability3 = InputSystem.actions.FindAction("Ability3", throwIfNotFound: true).triggered;
-        //bool ability4 = InputSystem.actions.FindAction("Ability4", throwIfNotFound: true).triggered;
 
-        // jump action
-        bool jump = InputSystem.actions.FindAction("Jump", throwIfNotFound: true).triggered;
 
+        // actions
         switch (currPower) {
             case Power.Default:
-                if (ability1) {
+                if (ability1Action.triggered) {
                     currPower = Power.Fast;
                 }
 
-                if (ability2) {
+                if (ability2Action.triggered) {
                     currPower = Power.Inverted;
                 }
 
-                if (ability3) {
+                if (ability3Action.triggered) {
                     currPower = Power.Slow;
                 }
                 break;
 
             case Power.Fast:
-                if (ability1) {
+                if (ability1Action.triggered) {
                     currPower = Power.Default;
                 }
 
-                if (ability2) {
+                if (ability2Action.triggered) {
                     currPower = Power.Inverted;
                 }
 
-                if (ability3) {
+                if (ability3Action.triggered) {
                     currPower = Power.Slow;
                 }
                 break;
             
             case Power.Slow:
-                if (ability1) {
+                if (ability1Action.triggered) {
                     currPower = Power.Fast;
                 }
 
-                if (ability2) {
+                if (ability2Action.triggered) {
                     currPower = Power.Inverted;
                 }
 
-                if (ability3) {
+                if (ability3Action.triggered) {
                     currPower = Power.Default;
                 }
                 break;
             
             case Power.Inverted:
                 InvertAbility();
-                if (ability1) {
+                if (ability1Action.triggered) {
                     currPower = Power.Fast;
                 }
 
-                if (ability2) {
+                if (ability2Action.triggered) {
                     currPower = Power.Default;
                 }
 
-                if (ability3) {
+                if (ability3Action.triggered) {
                     currPower = Power.Slow;
                 }
                 break;
@@ -142,7 +150,7 @@ public class Powers : MonoBehaviour
 
 
         // jumping
-        if (jump && isGrounded) {
+        if (jumpAction.triggered && isGrounded) {
             Jump();
         }
     }

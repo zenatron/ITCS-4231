@@ -14,9 +14,17 @@ public class PlayerMovement : MonoBehaviour
     [Header("Assign the Main Camera Here")]
     [SerializeField] private Transform mainCameraTransform;
 
+    private InputAction brakeAction;
+    private InputAction moveAction;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+    }
+
+    private void OnEnable() {
+        moveAction = InputSystem.actions.FindAction("Move", throwIfNotFound: true);
+        brakeAction = InputSystem.actions.FindAction("Brake", throwIfNotFound: true);
     }
 
     private void FixedUpdate()
@@ -39,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         }
         
 
-        Vector2 movement = InputSystem.actions.FindAction("Move", throwIfNotFound: true).ReadValue<Vector2>();
+        Vector2 movement = moveAction.ReadValue<Vector2>();
         float horizontal = movement.x;
         float vertical = movement.y;
 
@@ -58,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 currentVelocity = rb.linearVelocity;
 
         // get brake force
-        float brakeForce = InputSystem.actions.FindAction("Brake", throwIfNotFound: true).ReadValue<float>();
+        float brakeForce = brakeAction.ReadValue<float>();
         
         // apply brake force
         if (brakeForce > 0)
