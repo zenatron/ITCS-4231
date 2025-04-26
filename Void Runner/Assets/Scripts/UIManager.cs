@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     private GameObject lastCanvas;
     private bool isFullscreen;
     private bool showFPS_UI;
-    private GameObject FPS_UI;
+    public GameObject FPS_UI;
     
     void Awake() {
         if (Instance != null && Instance != this) {
@@ -28,7 +28,6 @@ public class UIManager : MonoBehaviour
     }
     private void Start()
     {
-        FPS_UI = GameObject.Find("FPSDisplay");
         isFullscreen = true;
         showFPS_UI = false;
         InitializeUI();
