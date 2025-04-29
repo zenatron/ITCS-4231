@@ -1,52 +1,55 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private float accelerationForce = 3f;
-    [SerializeField] private float maxSpeed = 10f;
+
+    [Header("Player Movement")]
+    [SerializeField] private float baseAcceleration = 3f;
+    [SerializeField] private float baseMaxSpeed = 10f;
+    [SerializeField] private float accelerationForce;
+    [SerializeField] private float maxSpeed;
 
     [Header("Assign the Main Camera Here")]
     [SerializeField] private Transform mainCameraTransform;
 
-    private bool isFast = false; 
-    private bool isSlow = false;
+    private InputAction brakeAction;
+    private InputAction moveAction;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    // private void Update()
-    // {
-    //     MovePlayer();
-    // }
+    private void OnEnable() {
+        moveAction = InputSystem.actions.FindAction("Move", throwIfNotFound: true);
+        brakeAction = InputSystem.actions.FindAction("Brake", throwIfNotFound: true);
+    }
 
     private void FixedUpdate()
     {
-        float horizontal = Input.GetAxis("Horizontal"); // A/D or Left/Right arrow
-        float vertical = Input.GetAxis("Vertical"); // W/S or Up/Down arrow
+        switch (Powers.Instance.currPower) {
+            case Power.Fast:
+                accelerationForce = baseAcceleration * 2f;
+                maxSpeed = baseMaxSpeed * 1.5f;
+                break;
 
-        if (Input.GetKeyDown(KeyCode.Alpha1)) {
-            if (isFast) {
-                ResetSpeed();
-                Debug.Log("Reset Speed");
-            } else {
-                Fast();
-                Debug.Log("Fast");
-            }
+            case Power.Slow:
+                accelerationForce = baseAcceleration;
+                maxSpeed = baseMaxSpeed * 0.5f;
+                break;
+
+            default:
+                accelerationForce = baseAcceleration;
+                maxSpeed = baseMaxSpeed;
+                break;
         }
+        
 
-        if (Input.GetKeyDown(KeyCode.Alpha3)){
-            if (isSlow) {
-                ResetSpeed();
-                Debug.Log("Reset Speed");
-            } else {
-                Slow();
-                Debug.Log("Slow");
-            }
-        }
-
+        Vector2 movement = moveAction.ReadValue<Vector2>();
+        float horizontal = movement.x;
+        float vertical = movement.y;
 
         // Get camera's forward and right directions
         Vector3 camForward = mainCameraTransform.forward;
@@ -62,37 +65,18 @@ public class PlayerMovement : MonoBehaviour
         // current velocity vector
         Vector3 currentVelocity = rb.linearVelocity;
 
-        // multiply braking force
-        if (Input.GetKey(KeyCode.C))
+        // get brake force
+        float brakeForce = brakeAction.ReadValue<float>();
+        
+        // apply brake force
+        if (brakeForce > 0)
         {
-            rb.AddForce(-currentVelocity * 4 * accelerationForce, ForceMode.Force);
+            rb.AddForce(-currentVelocity * 4 * accelerationForce * brakeForce, ForceMode.Force);
         }
         else
         {
             // calculate target velocity
             rb.AddForce(moveDirection * accelerationForce, ForceMode.Force);
         }
-
-        
-    }
-
-    private void Fast() {
-        rb.linearDamping = 0f;
-        accelerationForce *= 1.5f;
-        isFast = true;
-        isSlow = false;
-    }
-
-    private void Slow() {
-        rb.linearDamping = 5f;
-        isFast = false;
-        isSlow = true;
-    }
-
-    private void ResetSpeed() {
-        rb.linearDamping = 3f;
-        accelerationForce = 3f;
-        isFast = false;
-        isSlow = false;
     }
 }

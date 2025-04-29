@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-//TODO: Link PlayUI, Figure out Retry button
+using UnityEngine.InputSystem;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,7 +11,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject pauseCanvas;
     [SerializeField] private GameObject UI;
     private GameObject lastCanvas;
-    private bool isFullscreen = true;
+    private bool isFullscreen;
+    private bool showFPS_UI;
+    public GameObject FPS_UI;
+    private InputAction pauseAction;
     
     void Awake() {
         if (Instance != null && Instance != this) {
@@ -26,18 +26,30 @@ public class UIManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-    private void Start()
-    {
+    private void Start() {
+        isFullscreen = true;
+        showFPS_UI = false;
         InitializeUI();
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            if (!pauseCanvas.activeInHierarchy) {
-                Pause();
-            } else {
-                Resume();
-            }
+    }
+
+    private void OnEnable () {
+        pauseAction = InputSystem.actions.FindAction("Pause", throwIfNotFound: true);
+        pauseAction.performed += OnPausePerformed;
+    }
+
+    private void OnDisable() {
+        pauseAction.performed -= OnPausePerformed;
+    }
+
+    private void OnPausePerformed(InputAction.CallbackContext ctx)
+    {
+        if (!pauseCanvas.activeInHierarchy) {
+            Pause();
+        } else {
+            Resume();
         }
     }
 
@@ -62,6 +74,11 @@ public class UIManager : MonoBehaviour
         } else {
             Screen.SetResolution(800, 600, FullScreenMode.Windowed);
         }
+    }
+
+    public void FPSToggle() {
+        showFPS_UI = !showFPS_UI;
+        FPS_UI.SetActive(showFPS_UI);
     }
 
     public void Settings()
@@ -116,8 +133,10 @@ public class UIManager : MonoBehaviour
     public void Death()
     {
         deathCanvas.SetActive(true);
+        UI.SetActive(false);
         Time.timeScale = 0;
         lastCanvas = deathCanvas;
+        Powers.Instance.currPower = Power.Default;
     }
 
     public void Win()

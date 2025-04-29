@@ -1,9 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-/// <summary>
-/// checkpoint manager
-/// </summary>
+/// <summary>checkpoint manager</summary>
 public class CheckpointManager : MonoBehaviour
 {
     /*
@@ -18,13 +16,20 @@ public class CheckpointManager : MonoBehaviour
     
     /// <summary>list of all checkpoints in the scene</summary>
     private List<Checkpoint> checkpoints = new List<Checkpoint>();
+
+    /// <summary>player transform reference</summary>
     [SerializeField] private Transform playerTransform;
     private Rigidbody rb;
+
+    /// <summary>dictionary of keyboard keys and checkpoint positions for cheat codes</summary>
+    private Dictionary<KeyCode, Vector3> _checkpointKeys;
     
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        _checkpointKeys = new Dictionary<KeyCode, Vector3>();
     }
     
     /// <summary>checkpoint setup on start</summary>
@@ -39,6 +44,27 @@ public class CheckpointManager : MonoBehaviour
         RegisterAllCheckpoints();
         // Show only the next checkpoint
         UpdateCheckpointVisibility();
+
+        // up to 9 checkpoints for now
+        int maxKeys = Mathf.Min(checkpoints.Count, 9);
+        for (int i = 0; i < maxKeys; i++)
+        {
+            _checkpointKeys.Add(KeyCode.Alpha1 + i, checkpoints[i].transform.position);
+            Debug.Log("Checkpoint Cheat: " + (i + 1) + " -> " + checkpoints[i].transform.position);
+        }
+    }
+
+    private void Update() {
+        // Check for cheat codes
+        foreach (var kv in _checkpointKeys)
+        {
+            if (Input.GetKeyDown(kv.Key))
+            {
+                TeleportTo(kv.Value);
+                Debug.Log("Teleporting to checkpoint: " + kv.Value);
+                break;
+            }
+        }
     }
     
     /// <summary>add checkpoint to list (register)</summary>
@@ -105,8 +131,19 @@ public class CheckpointManager : MonoBehaviour
     }
 
     public void RespawnPlayer() {
-        playerTransform.position = GetRespawnPosition();
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        TeleportTo(GetRespawnPosition());
+    } 
+
+    /// <summary>teleport player to location</summary>
+    /// <param name="position">position to teleport player to</param>
+    /// <param name="resetMovement">reset movement and velocity</param>
+    public void TeleportTo(Vector3 position, bool resetMovement = true)
+    {
+        playerTransform.position = position;
+        if (resetMovement)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
     }
 }
