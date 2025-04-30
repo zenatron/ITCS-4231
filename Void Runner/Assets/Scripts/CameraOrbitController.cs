@@ -21,7 +21,7 @@ public class CameraOrbitController : MonoBehaviour
             Debug.LogError("No CinemachineCamera assigned!");
             return;
         }
-
+        Debug.Log(cineCam);
         orbitalFollow = cineCam.GetComponent<CinemachineOrbitalFollow>();
     }
     
