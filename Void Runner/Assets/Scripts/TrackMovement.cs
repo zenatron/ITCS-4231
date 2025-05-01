@@ -4,61 +4,23 @@ using System.Collections;
 
 public class TrackMovement : MonoBehaviour
 {
-    // private Rigidbody rb;
-    /* Phil 3/3/25
-    This may change, but unless we need the rigidbody for
-    something, it may be better to use transform
-    */
+    [Header("Starting point")]
+    [SerializeField] private Transform pointA;
+    [Header("Ending point")]
+    [SerializeField] private Transform pointB;
+    private float speed = 1.0f;
+    private float startTime;
+    private float journeyLength;
 
-    private Transform trans;
-
-    [Header("Rotation Speeds")]
-    [SerializeField] public float xSpeed = 0.25f;
-    [SerializeField] public float ySpeed = 1f;
-    [SerializeField] public float zSpeed = 0.25f;
-
-    
-    void Start()
-    {
-        // rb = GetComponent<Rigidbody>();
-        trans = GetComponent<Transform>();
+    void Start() {
+        track = this.gameObject;
+        startTime = Time.time;
+        journeyLength = Vector3.Distance(pointA.position, pointB.position);
     }
 
-    private void Update()
-    {
-        /* Phil 3/3/25
-        We probably want an adaptive speed based on the current angular velocity
-        Some axes may need their speed to be dampened
-        */
-
-        // Pitch (X-axis)
-        if (Input.GetKey(KeyCode.W))
-        {
-            trans.Rotate(-0.5f * xSpeed, 0, 0, Space.Self);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            trans.Rotate(0.5f * xSpeed, 0, 0, Space.Self);
-        }
-
-        // Yaw (Y-axis)
-        if (Input.GetKey(KeyCode.Q))
-        {
-            trans.Rotate(0, -0.05f * ySpeed, 0, Space.Self);
-        }
-        if (Input.GetKey(KeyCode.E))
-        {
-            trans.Rotate(0, 0.05f * ySpeed, 0, Space.Self);
-        }
-
-        // Roll (Z-axis)
-        if (Input.GetKey(KeyCode.A))
-        {
-            trans.Rotate(0, 0, -0.5f * zSpeed, Space.Self);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            trans.Rotate(0, 0, 0.5f * zSpeed, Space.Self);
-        }
+    void Update() {
+        float distCovered = (Time.time - startTime) * speed;
+        float partOfJourney = distCovered / journeyLength;
+        transform.position = Vector3.Lerp(pointA.position, pointB.position, partOfJourney);
     }
 }
