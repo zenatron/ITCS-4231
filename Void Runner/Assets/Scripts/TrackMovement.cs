@@ -13,7 +13,7 @@ public class TrackMovement : MonoBehaviour
     private float journeyLength;
 
     void Start() {
-        track = this.gameObject;
+        //track = this.gameObject;
         startTime = Time.time;
         journeyLength = Vector3.Distance(pointA.position, pointB.position);
     }

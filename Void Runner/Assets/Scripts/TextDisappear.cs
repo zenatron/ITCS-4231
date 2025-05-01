@@ -15,7 +15,6 @@ public class TextDisappear : MonoBehaviour
             timer += Time.deltaTime;
             if (timer > 3.0f)
             {
-                Debug.Log("Track disappear 2"); 
                 Disappear(other.gameObject);
             }
         }
@@ -28,7 +27,6 @@ public class TextDisappear : MonoBehaviour
         if (other.gameObject.CompareTag("DCheckpoint"))
         {
             Dcheck = true;
-            Debug.Log("Track disappear 1");
         }
     }
 
@@ -38,7 +36,6 @@ public class TextDisappear : MonoBehaviour
         for (int i = 0; i < checkpoint.transform.childCount; i++)
         {
             checkpoint.transform.GetChild(i).gameObject.GetComponent<Renderer>().enabled = false; 
-            Debug.Log("track dissapear 3");
         }
     }
 }
