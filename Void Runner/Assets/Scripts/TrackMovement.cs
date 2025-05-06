@@ -1,26 +1,49 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using System.Collections;
+using System;
+using Random = System.Random;
 
 public class TrackMovement : MonoBehaviour
 {
-    [Header("Starting point")]
+    [Header("Movement Points")]
     [SerializeField] private Transform pointA;
-    [Header("Ending point")]
     [SerializeField] private Transform pointB;
-    private float speed = 1.0f;
-    private float startTime;
-    private float journeyLength;
 
-    void Start() {
-        //track = this.gameObject;
-        startTime = Time.time;
-        journeyLength = Vector3.Distance(pointA.position, pointB.position);
+    [Header("Settings")]
+    private float moveDuration; // going between pointA and pointB
+    [SerializeField] private float waitTime = 1.5f; // waiting at the points
+
+    private void Start()
+    {
+        Random rnd = new();
+        moveDuration = (float)((rnd.NextDouble() + 1) * 1.5);
+        StartCoroutine(MovePingPong());
     }
 
-    void Update() {
-        float distCovered = (Time.time - startTime) * speed;
-        float partOfJourney = distCovered / journeyLength;
-        transform.position = Vector3.Lerp(pointA.position, pointB.position, partOfJourney);
+    private IEnumerator MovePingPong()
+    {
+        while (true)
+        {
+            // Move from A to B
+            yield return StartCoroutine(MoveBetweenPoints(pointA.position, pointB.position));
+            yield return new WaitForSeconds(waitTime);
+
+            // Move from B to A
+            yield return StartCoroutine(MoveBetweenPoints(pointB.position, pointA.position));
+            yield return new WaitForSeconds(waitTime);
+        }
+    }
+
+    private IEnumerator MoveBetweenPoints(Vector3 start, Vector3 end)
+    {
+        float elapsed = 0f;
+        while (elapsed < moveDuration)
+        {
+            float t = elapsed / moveDuration;
+            transform.position = Vector3.Lerp(start, end, t);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = end;
     }
 }
