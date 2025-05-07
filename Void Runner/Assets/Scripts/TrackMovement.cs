@@ -16,7 +16,7 @@ public class TrackMovement : MonoBehaviour
     private void Start()
     {
         Random rnd = new();
-        moveDuration = (float)((rnd.NextDouble() + 1) * 1.5);
+        moveDuration = (float)((rnd.NextDouble() + 1) * 5);
         StartCoroutine(MovePingPong());
     }
 
