@@ -127,7 +127,7 @@ public class CheckpointManager : MonoBehaviour
 
     public int GetCurrentCheckpoint()
     {
-        return checkpointState.lastCheckpointID; //yay arrow functions
+        return checkpointState.lastCheckpointID;
     }
 
     public void RespawnPlayer() {
@@ -146,4 +146,5 @@ public class CheckpointManager : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
         }
     }
+
 }
