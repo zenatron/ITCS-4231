@@ -27,3 +27,4 @@ Void Runner is a space-themed puzzle-platformer that challenges players to rethi
 ## Acknowledgements
 * Music & SFX: https://opengameart.org/
 * Starfield Skybox: https://assetstore.unity.com/packages/2d/textures-materials/sky/starfield-skybox-92717
+* Sci-Fi UI Skins: https://assetstore.unity.com/packages/2d/gui/sci-fi-gui-skin-15606
