@@ -1,52 +1,46 @@
 using UnityEngine;
+using System;
 
 public class TrackDisappear : MonoBehaviour
 {
     [SerializeField] private Material trackMaterial;
     [SerializeField] private Material invisibleMaterial;
-    bool Dcheck = false;
     float timer = 0.0f;
-    Collider other;
+    private GameObject cpParent;
+    [Header("Assign to the Checkpoint (green cube) of the track that is going to disappear")]
+    [SerializeField]private GameObject cpToDisappear;
+    private bool cpActivated;
+
 
     void Start ()
     {
-        void OnCollisionEnter(Collision collision)
-        {
-            // Perform death logic here
-            if (collision.collider.tag == "MainSphere")
+        cpParent = this.gameObject;
+    }
+
+    void Update()
+    {
+        if (cpToDisappear.activeInHierarchy) {
+            cpActivated = true;
+        }
+        if (cpActivated) {
+            if (!cpToDisappear.activeInHierarchy) {
+                timer += Time.deltaTime; // timer starts
+            if (timer > 3.0f) // after 3 seconds the disappear function executes
             {
-                Disappear(other.gameObject, true);//resets track visibility after a death
+                Disappear(cpParent, false);
             }
+            if (Time.timeScale == 0f){
+                timer = 0f;
+                Disappear(cpParent, true);
+            }
+            }   
         }
         
     }
 
-    void Update()//step 2
-    {
-        if (Dcheck)//after ontrigger scripts sets dcheck to true, it means the next section is a disappearing cp
-        {
-            timer += Time.deltaTime;//timer starts
-            if (timer > 3.0f)//after 3 seconds the disappear function executes
-            {
-                Disappear(other.gameObject, false);
-            }
-        }
-    }
-
-    void OnTriggerEnter(Collider other1) //step 1: starts on the trigger
-    {
-        Dcheck = false;//if a Dcp is reached, then a normal cp, this resets it to normal
-        other = other1;
-        if (other.gameObject.CompareTag("DCheckpoint"))//checks if cp is a disappearing cp or not
-        {
-            Dcheck = true;
-            Debug.Log("Track disappear 1");
-        }
-    }
-
     void Disappear(GameObject checkpoint, bool visible)//step 3: disabling/reenabling visibility
     {
-        for (int i = 0; i < checkpoint.transform.childCount; i++)//for every track in the section, disables its visibility
+        for (int i = 0; i < checkpoint.transform.childCount; i++)//for every track in the section, disables/reenables its visibility
         {
             if (visible)
                 checkpoint.transform.GetChild(i).gameObject.GetComponent<Renderer>().material = trackMaterial;
@@ -55,7 +49,3 @@ public class TrackDisappear : MonoBehaviour
         }
     }
 }
-
-// BUGS:
-//      makes tracks you're on invisible
-//      on respawn, doesn't make visible then invisible

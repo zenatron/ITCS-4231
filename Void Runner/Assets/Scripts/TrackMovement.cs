@@ -1,64 +1,49 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using System.Collections;
+using System;
+using Random = System.Random;
 
 public class TrackMovement : MonoBehaviour
 {
-    // private Rigidbody rb;
-    /* Phil 3/3/25
-    This may change, but unless we need the rigidbody for
-    something, it may be better to use transform
-    */
+    [Header("Movement Points")]
+    [SerializeField] private Transform pointA;
+    [SerializeField] private Transform pointB;
 
-    private Transform trans;
+    [Header("Settings")]
+    private float moveDuration; // going between pointA and pointB
+    [SerializeField] private float waitTime = 1.5f; // waiting at the points
 
-    [Header("Rotation Speeds")]
-    [SerializeField] public float xSpeed = 0.25f;
-    [SerializeField] public float ySpeed = 1f;
-    [SerializeField] public float zSpeed = 0.25f;
-
-    
-    void Start()
+    private void Start()
     {
-        // rb = GetComponent<Rigidbody>();
-        trans = GetComponent<Transform>();
+        Random rnd = new();
+        moveDuration = (float)((rnd.NextDouble() + 1) * 5);
+        StartCoroutine(MovePingPong());
     }
 
-    private void Update()
+    private IEnumerator MovePingPong()
     {
-        /* Phil 3/3/25
-        We probably want an adaptive speed based on the current angular velocity
-        Some axes may need their speed to be dampened
-        */
+        while (true)
+        {
+            // Move from A to B
+            yield return StartCoroutine(MoveBetweenPoints(pointA.position, pointB.position));
+            yield return new WaitForSeconds(waitTime);
 
-        // Pitch (X-axis)
-        if (Input.GetKey(KeyCode.W))
-        {
-            trans.Rotate(-0.5f * xSpeed, 0, 0, Space.Self);
+            // Move from B to A
+            yield return StartCoroutine(MoveBetweenPoints(pointB.position, pointA.position));
+            yield return new WaitForSeconds(waitTime);
         }
-        if (Input.GetKey(KeyCode.S))
-        {
-            trans.Rotate(0.5f * xSpeed, 0, 0, Space.Self);
-        }
+    }
 
-        // Yaw (Y-axis)
-        if (Input.GetKey(KeyCode.Q))
+    private IEnumerator MoveBetweenPoints(Vector3 start, Vector3 end)
+    {
+        float elapsed = 0f;
+        while (elapsed < moveDuration)
         {
-            trans.Rotate(0, -0.05f * ySpeed, 0, Space.Self);
+            float t = elapsed / moveDuration;
+            transform.position = Vector3.Lerp(start, end, t);
+            elapsed += Time.deltaTime;
+            yield return null;
         }
-        if (Input.GetKey(KeyCode.E))
-        {
-            trans.Rotate(0, 0.05f * ySpeed, 0, Space.Self);
-        }
-
-        // Roll (Z-axis)
-        if (Input.GetKey(KeyCode.A))
-        {
-            trans.Rotate(0, 0, -0.5f * zSpeed, Space.Self);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            trans.Rotate(0, 0, 0.5f * zSpeed, Space.Self);
-        }
+        transform.position = end;
     }
 }

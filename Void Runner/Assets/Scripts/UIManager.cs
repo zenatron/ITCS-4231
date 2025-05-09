@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject startCanvas;
     [SerializeField] private GameObject deathCanvas;
     [SerializeField] private GameObject settingsCanvas;
-    [SerializeField] private GameObject winCanvas;
+    [SerializeField] public GameObject winCanvas;
     [SerializeField] private GameObject pauseCanvas;
     [SerializeField] private GameObject UI;
     private GameObject lastCanvas;
@@ -15,6 +16,7 @@ public class UIManager : MonoBehaviour
     private bool showFPS_UI;
     public GameObject FPS_UI;
     private InputAction pauseAction;
+    private bool hasWon = false;
     
     void Awake() {
         if (Instance != null && Instance != this) {
@@ -32,7 +34,11 @@ public class UIManager : MonoBehaviour
         InitializeUI();
     }
 
-    private void Update() {
+    void Update() {
+        int cp = CheckpointManager.Instance.GetCurrentCheckpoint();
+        if (cp == 7 && !hasWon) {
+            Win();
+        }
     }
 
     private void OnEnable () {
@@ -53,15 +59,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void InitializeUI()
-    {
-        deathCanvas.SetActive(false);
-        settingsCanvas.SetActive(false);
-        winCanvas.SetActive(false);
-        pauseCanvas.SetActive(false);
-        UI.SetActive(false);
+    public void InitializeUI() {
+        lastCanvas = null;
+        DeactivateAllCanvases();
         startCanvas.SetActive(true);
-        Time.timeScale = 0; 
+        Time.timeScale = 0;
         lastCanvas = startCanvas;
     }
 
@@ -126,7 +128,6 @@ public class UIManager : MonoBehaviour
     {
         settingsCanvas.SetActive(false);
         lastCanvas.SetActive(true);
-
     }
 
 
@@ -139,10 +140,22 @@ public class UIManager : MonoBehaviour
         Powers.Instance.currPower = Power.Default;
     }
 
-    public void Win()
-    {
+    public void Win() {
+        if (hasWon) return;
+
+        DeactivateAllCanvases();
         winCanvas.SetActive(true);
         Time.timeScale = 0;
         lastCanvas = winCanvas;
+        hasWon = true;
+    }
+
+    private void DeactivateAllCanvases() {
+        deathCanvas.SetActive(false);
+        settingsCanvas.SetActive(false);
+        winCanvas.SetActive(false);
+        pauseCanvas.SetActive(false);
+        UI.SetActive(false);
+        startCanvas.SetActive(false);
     }
 }

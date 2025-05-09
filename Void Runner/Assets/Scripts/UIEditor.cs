@@ -3,6 +3,7 @@ using TMPro;
 
 class Timer : MonoBehaviour
 {
+    public static Timer Instance {get; private set;}
     public string time;
     public TextMeshProUGUI totalTime;
     private float secondsCount;
@@ -20,6 +21,9 @@ class Timer : MonoBehaviour
     {
         UpdateTimerUI();
         SetTimerText();
+        if (UIManager.Instance.winCanvas.activeInHierarchy) {
+            WinTime.Instance.DisplayTime(time);
+        }
     }
 
     void SetTimerText()
@@ -30,14 +34,15 @@ class Timer : MonoBehaviour
     //call this on update
     public void UpdateTimerUI()
     {
-        //set timer UI
-        secondsCount += Time.deltaTime;
-        time = minuteCount + " m, " + (int)secondsCount + " s ";
-        if (secondsCount >= 60)
-        {
-            minuteCount++;
-            secondsCount = 0;
+        if (!UIManager.Instance.winCanvas.activeInHierarchy) {
+            //set timer UI
+            secondsCount += Time.deltaTime;
+            time = minuteCount + " m, " + (int)secondsCount + " s ";
+            if (secondsCount >= 60)
+            {
+                minuteCount++;
+                secondsCount = 0;
+            }
         }
-
     }
 }

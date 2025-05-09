@@ -66,12 +66,12 @@ public class Checkpoint : MonoBehaviour
         // Don't show if already activated
         if (isActivated)
         {
-        gameObject.GetComponent<Renderer>().enabled = false;
+            gameObject.SetActive(false);
             return;
         }
         
         // Show/hide based on parameter
-        gameObject.GetComponent<Renderer>().enabled = visible;
+        gameObject.SetActive(visible);
         
         if (visible)
         {
