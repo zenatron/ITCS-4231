@@ -3,7 +3,7 @@
 Team Members: Adam Kerns, Jackson Franke, and Phil Vishnevsky
 
 ## About
-
+Void Runner is a space-themed puzzle-platformer that challenges players to rethink movement and gravity. You move the character throughout the world, passing checkpoints as fast as possible. With a minimalist visual style and innovative mechanics, Void Runner drops you into a spherical maze where you have powers — fast-forward, slow-mo, invert gravity, and jump. It’s a mind-bending experience where every twist of the world is a puzzle piece.
 
 ## Installation
 1. Download the Unity project.
