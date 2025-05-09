@@ -165,6 +165,6 @@ public class Powers : MonoBehaviour
         }
     }
     private void InvertAbility() {
-        rb.AddForce(-1*Physics.gravity, ForceMode.Acceleration);
+        rb.AddForce(-1 * Physics.gravity, ForceMode.Acceleration);
     }
 }

@@ -2439,7 +2439,7 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   OrbitStyle: 0
-  Radius: 22
+  Radius: 20
   Orbits:
     Top:
       Radius: 2
@@ -2534,7 +2534,7 @@ Transform:
   m_GameObject: {fileID: 475013641}
   serializedVersion: 2
   m_LocalRotation: {x: 0.17364818, y: 6.6111176e-16, z: -1.8052052e-17, w: 0.9848078}
-  m_LocalPosition: {x: 0, y: 7.5244427, z: -20.673237}
+  m_LocalPosition: {x: 0, y: 6.8404026, z: -18.793852}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6824,7 +6824,7 @@ Transform:
   m_GameObject: {fileID: 1054507199}
   serializedVersion: 2
   m_LocalRotation: {x: 0.15212335, y: -0.000000035926195, z: 0.00000001530054, w: 0.98836154}
-  m_LocalPosition: {x: 8.31, y: 4.007058, z: -17.39717}
+  m_LocalPosition: {x: 8.31, y: 3.4056466, z: -15.489736}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7053,7 +7053,7 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   OrbitStyle: 0
-  Radius: 10
+  Radius: 8
   Orbits:
     Top:
       Radius: 2
@@ -7835,8 +7835,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeacdccb830004e769c39c4284b9d1af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fpsText: {fileID: 1251227521}
-  updateInterval: 0.1
 --- !u!114 &1251227521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12325,11 +12323,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
-  far clip plane: 5000
-  field of view: 40
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 70
   orthographic: 0
-  orthographic size: 10
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -12353,8 +12351,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1939491055}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.0157948, y: -14.360146, z: -7.578345}
+  m_LocalRotation: {x: 0.17364821, y: 6.79041e-16, z: -1.1973326e-16, w: 0.9848078}
+  m_LocalPosition: {x: 0, y: 6.8404026, z: -18.793852}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14374,8 +14372,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85ee80c9815643c3b2e2205fe363688, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetFrameRate: 120
-  useVSync: 1
 --- !u!1 &2125832928
 GameObject:
   m_ObjectHideFlags: 0

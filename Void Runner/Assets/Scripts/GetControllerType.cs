@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 public class GetControllerType : MonoBehaviour
 {
     public static GetControllerType Instance {get; private set;}
@@ -24,15 +25,13 @@ public class GetControllerType : MonoBehaviour
     // Update is called once per frame
 
     public Controller GetController() {
-        string[] joystickNames = Input.GetJoystickNames();
-        foreach (string joystickName in joystickNames) {
-            if (joystickName.ToLower().Contains("xbox")) {
-                return Controller.XBOX;
-            } else {
-                return Controller.OTHER;
-            }
+        bool controllerConnected = Gamepad.all.Count > 0;
+        Debug.Log("Controller connected: " + controllerConnected);
+        if (controllerConnected) {
+            return Controller.XBOX;
+        } else {
+            return Controller.COMPUTER;
         }
-        return Controller.COMPUTER;
     }
 
     public string returnValue(Controller controller, Dictionary<Controller, string> controls) {
